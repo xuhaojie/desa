@@ -8,17 +8,6 @@ import (
 	"runtime"
 )
 
-func PathExists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, err
-}
-
 func setupPipProxyLinux() error {
 	cfg := `
 	[global]
@@ -35,7 +24,7 @@ func setupPipProxyLinux() error {
 	}
 	targetPath := path.Join(userHomeDir, ".pip")
 	targetFile := path.Join(targetPath, "pip.conf")
-	exist, err := PathExists(targetPath)
+	exist, err := pathExists(targetPath)
 	if err != nil {
 		return err
 	}

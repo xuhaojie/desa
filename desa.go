@@ -25,14 +25,17 @@ func main() {
 		}
 	*/
 
-	/*
-		err := env.SetupPipProxy()
-		if err != nil {
-			fmt.Println(err)
-		}
-	*/
+	err := env.SetupPipProxy()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	err := env.SetupGolangProxy()
+	err = env.SetupGolangProxy()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = env.SetupCargoProxy()
 	if err != nil {
 		fmt.Println(err)
 	}
