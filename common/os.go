@@ -1,6 +1,12 @@
 package common
 
-import "runtime"
+import (
+	"fmt"
+	"log"
+	"os/exec"
+	"runtime"
+	"strings"
+)
 
 type OsType int32
 
@@ -59,4 +65,55 @@ func GetArchType() ArchType {
 		return ARCH_ARM64
 	}
 	return ARCH_UNKNOWN
+}
+
+type OsInfo struct {
+	Type     string
+	Name     string
+	Version  string
+	CodeName string
+}
+
+func (i OsInfo) String() string {
+	return fmt.Sprintf("type: %s\nname: %s\nversion: %s\ncodename: %s\n", i.Type, i.Name, i.Version, i.CodeName)
+}
+func GetOsVersionInfo() OsInfo {
+	var osInfo OsInfo
+	switch runtime.GOOS {
+	case "linux":
+		command := exec.Command("lsb_release", "-a")
+		out, err := command.CombinedOutput()
+		if err != nil {
+			log.Fatalf("command.Run() failed with %s\n", err)
+		}
+
+		var output = string(out)
+		fileds := strings.Split(output, "\n")
+		var infoMap = make(map[string]string)
+
+		for _, filed := range fileds {
+			if strings.Index(filed, ":") < 0 {
+				continue
+			}
+			v := strings.Split(filed, ":")
+
+			key := v[0]
+			value := strings.TrimLeft(v[1], " \t")
+			//value = strings.TrimRight(value, " \t")
+			infoMap[key] = value
+		}
+		//fmt.Println(infoMap)
+
+		osInfo.Type = "linux"
+		osInfo.Name = infoMap["Distributor ID"]
+		osInfo.Version = infoMap["Release"]
+		osInfo.CodeName = infoMap["Codename"]
+	case "darwin":
+		osInfo.Type = "darwin"
+	case "win32":
+		osInfo.Type = "windows"
+
+	}
+
+	return osInfo
 }

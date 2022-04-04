@@ -1,7 +1,6 @@
 package setup
 
 import (
-	"fmt"
 	"log"
 	"os/exec"
 )
@@ -15,10 +14,10 @@ func (cmd *Cmd) execute() ([]byte, error) {
 	command := exec.Command(cmd.cmd, cmd.params...)
 	out, err := command.CombinedOutput()
 	if err != nil {
-		fmt.Printf("combined out:\n%s\n", string(out))
+		//fmt.Printf("combined out:\n%s\n", string(out))
 		log.Fatalf("command.Run() failed with %s\n", err)
 	}
-	fmt.Printf("combined out:\n%s\n", string(out))
+	//fmt.Printf("combined out:\n%s\n", string(out))
 	return out, err
 }
 

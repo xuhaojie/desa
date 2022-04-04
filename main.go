@@ -1,26 +1,40 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"os"
+	"strings"
 
 	"autopard.com/desa/common"
 	"autopard.com/desa/download"
 	"autopard.com/desa/setup"
 )
 
-func main() {
-	// var builds = [...]string{"stable", "insider"}
-	// var oss = [...]string{"win32", "linux", "darwin"}
-	// var archs = [...]string{"x64", "universal", "arm64"}
-	// var formats = [...]string{"user", "archive", "deb", "rpm"}
-	//	uri := genVscodeUrl("insider", "linux", "x64", "rpm")
+var (
+	required string
 
-	flag_download_vscode := true
-	flag_setup_pip := false
-	flag_setup_go := false
-	flag_setup_cargo := false
-	flag_setup_git := false
-	if flag_download_vscode {
+	downloadCmd = flag.NewFlagSet("download", flag.ContinueOnError)
+	setupCmd    = flag.NewFlagSet("setup", flag.ContinueOnError)
+)
+
+var subCommands = map[string]*flag.FlagSet{
+	downloadCmd.Name(): downloadCmd,
+	setupCmd.Name():    setupCmd,
+}
+
+func downloadCmdHandler(args []string) {
+	downloadSet := flag.NewFlagSet("setup", flag.ContinueOnError)
+	//var g = setupSet.Bool("g", false, "generate sample config")
+	//var l = setupSet.Bool("l", false, "list targets")
+	//var m = setupSet.String("m", "", "mac address of target to wake")
+	//var n = setupSet.String("n", "", "name of target to wake")
+	//	setupSet.Parse(args)
+	downloadSet.Parse(args[1:])
+	target := args[0]
+	fmt.Println("download", target)
+	switch target {
+	case "vscode":
 		build := download.BUILD_STABLE
 
 		os := common.GetOsType()
@@ -36,44 +50,77 @@ func main() {
 		//arch := common.ARCH_UNIVERSAL
 
 		pkg := download.PACKAGE_UNKNOWN
-		//pkg := download.PACKAGE_EXE
-		//pkg := download.PACKAGE_MSI
-		//pkg := download.PACKAGE_DEB
-		//pkg := download.PACKAGE_RPM
-		//pkg := download.PACKAGE_ARCHIVE
+
+		if os == common.OS_LINUX && pkg == download.PACKAGE_UNKNOWN {
+			osInfo := common.GetOsVersionInfo()
+			//fmt.Println(osInfo)
+			switch strings.ToLower(osInfo.Name) {
+			case "ubuntu", "debian":
+				pkg = download.PACKAGE_DEB
+			case "centos", "fordera":
+				pkg = download.PACKAGE_RPM
+			default:
+				pkg = download.PACKAGE_ARCHIVE
+			}
+		}
 
 		err := download.DownloadVscode(build, os, arch, pkg)
 		if err != nil {
 			fmt.Println(err)
 		}
-	}
 
-	if flag_setup_pip {
-		err := setup.SetupPipProxy()
-		if err != nil {
-			fmt.Println(err)
-		}
 	}
+}
 
-	if flag_setup_go {
-		err := setup.SetupGolangProxy()
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	if flag_setup_cargo {
+func setupCmdHandler(args []string) {
+	setupSet := flag.NewFlagSet("setup", flag.ContinueOnError)
+	//var g = setupSet.Bool("g", false, "generate sample config")
+	//var l = setupSet.Bool("l", false, "list targets")
+	//var m = setupSet.String("m", "", "mac address of target to wake")
+	//var n = setupSet.String("n", "", "name of target to wake")
+	setupSet.Parse(args[1:])
+	target := args[0]
+	switch target {
+	case "cargo":
 		err := setup.SetupCargoProxy()
 		if err != nil {
 			fmt.Println(err)
 		}
-	}
-
-	if flag_setup_git {
+	case "git":
 		err := setup.SetupGit()
 		if err != nil {
 			fmt.Println(err)
 		}
-	}
+	case "go":
+		err := setup.SetupGolangProxy()
+		if err != nil {
+			fmt.Println(err)
+		}
+	case "pip":
+		err := setup.SetupPipProxy()
+		if err != nil {
+			fmt.Println(err)
+		}
 
+	}
+}
+
+func main() {
+
+	//	configFile := filepath.Join(configdir.LocalConfig(), "gwaker.cfg")
+	if len(os.Args) < 3 {
+		fmt.Println("expected 'setup' or 'download' subcommands")
+		os.Exit(1)
+	}
+	switch os.Args[1] {
+	case "download":
+		downloadCmdHandler(os.Args[2:])
+	case "setup":
+		setupCmdHandler(os.Args[2:])
+	}
+	/*
+		if required == "" {
+			fmt.Println("-required is required for all commands")
+		}
+	*/
 }

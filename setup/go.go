@@ -24,9 +24,6 @@ func setupGolangLinux() error {
 }
 
 func SetupGolangProxy() error {
-
-	fmt.Println(runtime.GOOS)
-	fmt.Println(runtime.GOARCH)
 	switch runtime.GOOS {
 	case "linux", "darwin":
 		return setupGolangLinux()
