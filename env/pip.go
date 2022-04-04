@@ -13,7 +13,7 @@ func setupPipProxyLinux() error {
 	[global]
 	index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 	[install]
-	trusted-host=mirrors.aliyun.com
+	trusted-host = https://pypi.tuna.tsinghua.edu.cn
 	`
 	userHomeDir, err := os.UserHomeDir()
 
