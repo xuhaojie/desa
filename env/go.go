@@ -17,7 +17,7 @@ func setupGolangLinux() error {
 		return err
 	}
 
-	params2 := []string{"env", "-w", "GOPROXY=https://goproxy.cn,directory"}
+	params2 := []string{"env", "-w", "GOPROXY=https://goproxy.cn,direct"}
 	out, err = execCommand("go", params2)
 	fmt.Println(string(out))
 	if err != nil {
@@ -32,7 +32,7 @@ func SetupGolangProxy() error {
 	fmt.Println(runtime.GOOS)
 	fmt.Println(runtime.GOARCH)
 	switch runtime.GOOS {
-	case "linux":
+	case "linux", "darwin":
 		return setupGolangLinux()
 	}
 	return nil

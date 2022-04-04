@@ -64,7 +64,7 @@ func SetupCargoProxy() error {
 	fmt.Println(runtime.GOOS)
 	fmt.Println(runtime.GOARCH)
 	switch runtime.GOOS {
-	case "linux":
+	case "linux", "darwin":
 		return setupCargoProxyLinux()
 	}
 	return nil

@@ -95,6 +95,12 @@ func genVscodeUrl(build string, os string, arch string, format string) string {
 				result = fmt.Sprintf("%s?build=%s&os=%s", base, build, os)
 			}
 		}
+	case "darwin":
+		if len(arch) > 0 {
+			result = fmt.Sprintf("%s?build=%s&os=%s-%s", base, build, os, arch)
+		} else {
+			result = fmt.Sprintf("%s?build=%s&os=%s", base, build, os)
+		}
 	}
 
 	return result
@@ -170,6 +176,7 @@ func DownloadVscode(build string, os string, arch string, format string) error {
 		return err
 	}
 	fmt.Println(url)
+
 	replacedUrl := replaceVscodeDownloadUrl(url, build, "https://vscode.cdn.azure.cn")
 	fmt.Println(replacedUrl)
 	arr := strings.Split(replacedUrl, "/")

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"autopard.com/desa/downloader"
 	"autopard.com/desa/env"
 )
 
@@ -13,19 +14,17 @@ func main() {
 	// var formats = [...]string{"user", "archive", "deb", "rpm"}
 	//	uri := genVscodeUrl("insider", "linux", "x64", "rpm")
 
-	/*
-		build := "stable"
-		os := "linux"
-		//arch := "arm64"
-		arch := "x64"
-		format := "deb"
-		err := downloader.DownloadVscode(build, os, arch, format)
-		if err != nil {
-			fmt.Println(err)
-		}
-	*/
+	build := "stable"
+	os := "darwin"
+	//arch := "arm64"
+	arch := ""
+	format := ""
+	err := downloader.DownloadVscode(build, os, arch, format)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	err := env.SetupPipProxy()
+	err = env.SetupPipProxy()
 	if err != nil {
 		fmt.Println(err)
 	}
