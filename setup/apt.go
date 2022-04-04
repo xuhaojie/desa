@@ -43,10 +43,7 @@ func (m MirrorName) String() string {
 	}
 }
 
-func setupAptSourceLinux() error {
-	mirrorName := MIRROR_ALIYUN
-	mirrorUrl := mirrorName.String()
-	fmt.Println(mirrorUrl)
+func setupAptSourceLinux(mirror string) error {
 
 	targetPath := "/etc/apt/sources.list"
 	backupPath := targetPath + ".backup"
@@ -70,7 +67,7 @@ func setupAptSourceLinux() error {
 			if end > start {
 				target := line[start+4 : end+1]
 				//fmt.Println(target)
-				line = strings.Replace(line, target, mirrorUrl, -1)
+				line = strings.Replace(line, target, mirror, -1)
 			}
 		} else {
 			start := strings.Index(line, "deb-src http")
@@ -79,7 +76,7 @@ func setupAptSourceLinux() error {
 				if end > start {
 					target := line[start+8 : end+1]
 					//fmt.Println(target)
-					line = strings.Replace(line, target, mirrorUrl, -1)
+					line = strings.Replace(line, target, mirror, -1)
 
 				}
 			}
@@ -110,10 +107,10 @@ func setupAptSourceLinux() error {
 	return err
 }
 
-func SetupAptSource() error {
+func SetupAptSource(mirror string) error {
 	switch runtime.GOOS {
 	case "linux":
-		return setupAptSourceLinux()
+		return setupAptSourceLinux(mirror)
 	default:
 		return errors.New("unsupported platform")
 	}
