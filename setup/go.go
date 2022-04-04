@@ -1,4 +1,4 @@
-package env
+package setup
 
 import (
 	"fmt"
@@ -9,21 +9,17 @@ import (
 func setupGolangLinux() error {
 	//$ go env -w GO111MODULE=on
 	//$ go env -w GOPROXY=https://goproxy.cn,directory
-	params1 := []string{"env", "-w", "GO111MODULE=on"}
-	out, err := execCommand("go", params1)
+	cmds := []Cmd{
+		{cmd: "go", params: []string{"env", "-w", "GO111MODULE=on"}},
+		{cmd: "go", params: []string{"env", "-w", "GOPROXY=https://goproxy.cn,direct"}},
+	}
+	out, err := executeCmds(cmds)
 	fmt.Println(string(out))
 	if err != nil {
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 		return err
 	}
 
-	params2 := []string{"env", "-w", "GOPROXY=https://goproxy.cn,direct"}
-	out, err = execCommand("go", params2)
-	fmt.Println(string(out))
-	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-		return err
-	}
 	return nil
 }
 

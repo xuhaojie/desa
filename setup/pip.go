@@ -1,4 +1,4 @@
-package env
+package setup
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"os"
 	"path"
 	"runtime"
+
+	"autopard.com/desa/common"
 )
 
 func setupPipProxyLinux() error {
@@ -24,7 +26,7 @@ func setupPipProxyLinux() error {
 	}
 	targetPath := path.Join(userHomeDir, ".pip")
 	targetFile := path.Join(targetPath, "pip.conf")
-	exist, err := pathExists(targetPath)
+	exist, err := common.PathExists(targetPath)
 	if err != nil {
 		return err
 	}

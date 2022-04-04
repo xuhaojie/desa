@@ -1,4 +1,4 @@
-package env
+package setup
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"os"
 	"path"
 	"runtime"
+
+	"autopard.com/desa/common"
 )
 
 func setupCargoProxyLinux() error {
@@ -44,7 +46,7 @@ func setupCargoProxyLinux() error {
 	}
 	targetPath := path.Join(userHomeDir, ".cargo")
 	targetFile := path.Join(targetPath, "config")
-	exist, err := pathExists(targetPath)
+	exist, err := common.PathExists(targetPath)
 	if err != nil {
 		return err
 	}
