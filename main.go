@@ -182,6 +182,26 @@ func setupCmdHandler(args []string) {
 		if err != nil {
 			fmt.Println(err)
 		}
+	case "npm":
+		var mirrorName string = "taobao"
+		if m != nil {
+			mirrorName = *m
+		}
+		var mirror string
+		switch mirrorName {
+		case "origin":
+			mirror = "https://registry.npmjs.org/"
+		case "taobao":
+			mirror = "https://registry.npm.taobao.org"
+		default:
+			fmt.Println("unknown mirror")
+			return
+		}
+
+		err := setup.SetupNpmProxy(mirror)
+		if err != nil {
+			fmt.Println(err)
+		}
 	case "pip":
 		var mirrorName string = "tuna"
 		if m != nil {

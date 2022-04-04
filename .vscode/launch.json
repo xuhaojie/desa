@@ -10,7 +10,7 @@
 			"request": "launch",
 			"mode": "debug",
 			"program": "${file}",
-			"args": ["setup" , "apt"]
+			"args": ["setup" , "npm" , "-m", "taobao"]
 		},
 		{
 			"name": "Launch Package",
