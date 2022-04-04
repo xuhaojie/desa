@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
 
 	"autopard.com/desa/common"
@@ -49,18 +50,18 @@ func downloadCmdHandler(args []string) {
 		//arch := common.ARCH_ARM64
 		//arch := common.ARCH_UNIVERSAL
 
-		pkg := download.PACKAGE_UNKNOWN
+		pkg := common.PACKAGE_UNKNOWN
 
-		if os == common.OS_LINUX && pkg == download.PACKAGE_UNKNOWN {
+		if os == common.OS_LINUX && pkg == common.PACKAGE_UNKNOWN {
 			osInfo := common.GetOsVersionInfo()
 			//fmt.Println(osInfo)
 			switch strings.ToLower(osInfo.Name) {
 			case "ubuntu", "debian":
-				pkg = download.PACKAGE_DEB
+				pkg = common.PACKAGE_DEB
 			case "centos", "fordera":
-				pkg = download.PACKAGE_RPM
+				pkg = common.PACKAGE_RPM
 			default:
-				pkg = download.PACKAGE_ARCHIVE
+				pkg = common.PACKAGE_ARCHIVE
 			}
 		}
 
@@ -68,7 +69,51 @@ func downloadCmdHandler(args []string) {
 		if err != nil {
 			fmt.Println(err)
 		}
+	case "nomachine":
+		build := download.BUILD_STABLE
 
+		os := common.GetOsType()
+		//os := common.OS_WIN32
+		//os := common.OS_LINUX
+		//os := common.OS_DARWIN
+
+		arch := common.GetArchType()
+		//arch := common.ARCH_X86
+		//arch := common.ARCH_AMD64
+		//arch := common.ARCH_ARM
+		//arch := common.ARCH_ARM64
+		//arch := common.ARCH_UNIVERSAL
+
+		pkg := common.PACKAGE_UNKNOWN
+
+		// PACKAGE_EXE     PackageType = 1
+		// PACKAGE_MSI     PackageType = 2
+		// PACKAGE_DEB     PackageType = 3
+		// PACKAGE_RPM     PackageType = 4
+		// PACKAGE_ARCHIVE PackageType = 5
+		switch runtime.GOOS {
+		case "linux":
+			if pkg == common.PACKAGE_UNKNOWN {
+				osInfo := common.GetOsVersionInfo()
+				//fmt.Println(osInfo)
+				switch strings.ToLower(osInfo.Name) {
+				case "ubuntu", "debian":
+					pkg = common.PACKAGE_DEB
+				case "centos", "fordera":
+					pkg = common.PACKAGE_RPM
+				default:
+					pkg = common.PACKAGE_ARCHIVE
+				}
+			}
+		case "windows":
+			if pkg == common.PACKAGE_UNKNOWN {
+				pkg = common.PACKAGE_EXE
+			}
+		}
+		err := download.DownloadNomachine(build, os, arch, pkg)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 

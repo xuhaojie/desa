@@ -29,18 +29,7 @@ func (p BuildType) String() string {
 	}
 }
 
-type PackageType int32
-
-const (
-	PACKAGE_UNKNOWN PackageType = 0
-	PACKAGE_EXE     PackageType = 1
-	PACKAGE_MSI     PackageType = 2
-	PACKAGE_DEB     PackageType = 3
-	PACKAGE_RPM     PackageType = 4
-	PACKAGE_ARCHIVE PackageType = 5
-)
-
-func genVscodeUrl(build BuildType, os common.OsType, arch common.ArchType, pkg PackageType) (string, error) {
+func genVscodeUrl(build BuildType, os common.OsType, arch common.ArchType, pkg common.PackageType) (string, error) {
 	base := "https://code.visualstudio.com/sha/download"
 	var result string
 	switch os {
@@ -61,14 +50,14 @@ func genVscodeUrl(build BuildType, os common.OsType, arch common.ArchType, pkg P
 		}
 
 		switch pkg {
-		case PACKAGE_EXE, PACKAGE_MSI, PACKAGE_UNKNOWN:
+		case common.PACKAGE_EXE, common.PACKAGE_MSI, common.PACKAGE_UNKNOWN:
 			if len(arch_str) > 0 {
 				result = fmt.Sprintf("%s?build=%s&os=%s-%s", base, build, os_str, arch_str)
 			} else {
 				result = fmt.Sprintf("%s?build=%s&os=%s", base, build, os_str)
 			}
 
-		case PACKAGE_ARCHIVE:
+		case common.PACKAGE_ARCHIVE:
 			if len(arch_str) > 0 {
 				result = fmt.Sprintf("%s?build=%s&os=%s-%s-%s", base, build, os_str, arch_str, "archive")
 			} else {
@@ -94,11 +83,11 @@ func genVscodeUrl(build BuildType, os common.OsType, arch common.ArchType, pkg P
 		}
 
 		switch pkg {
-		case PACKAGE_DEB:
+		case common.PACKAGE_DEB:
 			result = fmt.Sprintf("%s?build=%s&os=%s-%s-%s", base, build, os_str, "deb", arch_str)
-		case PACKAGE_RPM:
+		case common.PACKAGE_RPM:
 			result = fmt.Sprintf("%s?build=%s&os=%s-%s-%s", base, build, os_str, "rpm", arch_str)
-		case PACKAGE_ARCHIVE, PACKAGE_UNKNOWN:
+		case common.PACKAGE_ARCHIVE, common.PACKAGE_UNKNOWN:
 			result = fmt.Sprintf("%s?build=%s&os=%s-%s", base, build, os, arch_str)
 		}
 	case common.OS_DARWIN:
@@ -135,7 +124,7 @@ func replaceVscodeDownloadUrl(url string, build BuildType, newbase string) strin
 	}
 }
 
-func DownloadVscode(buildType BuildType, osType common.OsType, archType common.ArchType, pkgType PackageType) error {
+func DownloadVscode(buildType BuildType, osType common.OsType, archType common.ArchType, pkgType common.PackageType) error {
 
 	url, err := genVscodeUrl(buildType, osType, archType, pkgType)
 	if err != nil {
@@ -153,12 +142,12 @@ func DownloadVscode(buildType BuildType, osType common.OsType, archType common.A
 	}
 	fmt.Println(url)
 
-	replacedUrl := replaceVscodeDownloadUrl(url, buildType, "https://vscode.cdn.azure.cn")
-	fmt.Println(replacedUrl)
-	arr := strings.Split(replacedUrl, "/")
-	file := arr[len(arr)-1]
+	targetUrl := replaceVscodeDownloadUrl(url, buildType, "https://vscode.cdn.azure.cn")
+	fmt.Println("Get target url:", targetUrl)
+	fileds := strings.Split(targetUrl, "/")
+	file := fileds[len(fileds)-1]
 	tmpDir := os.TempDir()
 
-	common.DownloadFile(replacedUrl, path.Join(tmpDir, file))
+	common.DownloadFileProgress(targetUrl, path.Join(tmpDir, file))
 	return nil
 }
