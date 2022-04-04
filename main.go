@@ -12,18 +12,6 @@ import (
 	"autopard.com/desa/setup"
 )
 
-var (
-	required string
-
-	downloadCmd = flag.NewFlagSet("download", flag.ContinueOnError)
-	setupCmd    = flag.NewFlagSet("setup", flag.ContinueOnError)
-)
-
-var subCommands = map[string]*flag.FlagSet{
-	downloadCmd.Name(): downloadCmd,
-	setupCmd.Name():    setupCmd,
-}
-
 func downloadCmdHandler(args []string) {
 	downloadSet := flag.NewFlagSet("setup", flag.ContinueOnError)
 	//var g = setupSet.Bool("g", false, "generate sample config")
