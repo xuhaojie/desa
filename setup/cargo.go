@@ -1,7 +1,7 @@
 package setup
 
 import (
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"os"
 	"path"
@@ -40,9 +40,7 @@ func setupCargoProxyLinux() error {
 	userHomeDir, err := os.UserHomeDir()
 
 	if err != nil {
-		panic(err)
-	} else {
-		fmt.Println("User home directory: ", userHomeDir)
+		return err
 	}
 	targetPath := path.Join(userHomeDir, ".cargo")
 	targetFile := path.Join(targetPath, "config")
@@ -62,12 +60,11 @@ func setupCargoProxyLinux() error {
 }
 
 func SetupCargoProxy() error {
-
-	fmt.Println(runtime.GOOS)
-	fmt.Println(runtime.GOARCH)
 	switch runtime.GOOS {
 	case "linux", "darwin":
 		return setupCargoProxyLinux()
+	default:
+		return errors.New("unsupported platform")
 	}
 	return nil
 	// pip3 config list

@@ -1,6 +1,7 @@
 package setup
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -48,6 +49,8 @@ func SetupPipProxy() error {
 	switch runtime.GOOS {
 	case "linux", "darwin":
 		return setupPipProxyLinux()
+	default:
+		return errors.New("unsupported platform")
 	}
 	return nil
 	// pip3 config list

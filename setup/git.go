@@ -1,6 +1,7 @@
 package setup
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"runtime"
@@ -23,12 +24,11 @@ func setupGitLinux() error {
 }
 
 func SetupGit() error {
-
-	fmt.Println(runtime.GOOS)
-	fmt.Println(runtime.GOARCH)
 	switch runtime.GOOS {
 	case "linux", "darwin":
 		return setupGitLinux()
+	default:
+		return errors.New("unsupported platform")
 	}
 	return nil
 	// pip3 config list

@@ -126,6 +126,11 @@ func setupCmdHandler(args []string) {
 	setupSet.Parse(args[1:])
 	target := args[0]
 	switch target {
+	case "apt":
+		err := setup.SetupAptSource()
+		if err != nil {
+			fmt.Println(err)
+		}
 	case "cargo":
 		err := setup.SetupCargoProxy()
 		if err != nil {

@@ -10,7 +10,7 @@
 			"request": "launch",
 			"mode": "debug",
 			"program": "${file}",
-			"args": ["download" , "nomachine"]
+			"args": ["setup" , "apt"]
 		},
 		{
 			"name": "Launch Package",
