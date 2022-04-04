@@ -7,12 +7,13 @@ import (
 	"runtime"
 )
 
-func setupGolangLinux() error {
+func setupGolangLinux(mirror string) error {
 	//$ go env -w GO111MODULE=on
 	//$ go env -w GOPROXY=https://goproxy.cn,directory
+	proxy := fmt.Sprintf("GOPROXY=%s,direct", mirror)
 	cmds := []Cmd{
 		{cmd: "go", params: []string{"env", "-w", "GO111MODULE=on"}},
-		{cmd: "go", params: []string{"env", "-w", "GOPROXY=https://goproxy.cn,direct"}},
+		{cmd: "go", params: []string{"env", "-w", proxy}},
 	}
 	out, err := executeCmds(cmds)
 	fmt.Println(string(out))
@@ -24,14 +25,11 @@ func setupGolangLinux() error {
 	return nil
 }
 
-func SetupGolangProxy() error {
+func SetupGolangProxy(mirror string) error {
 	switch runtime.GOOS {
 	case "linux", "darwin":
-		return setupGolangLinux()
+		return setupGolangLinux(mirror)
 	default:
 		return errors.New("unsupported platform")
 	}
-	return nil
-	// pip3 config list
-
 }

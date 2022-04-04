@@ -178,7 +178,23 @@ func setupCmdHandler(args []string) {
 			fmt.Println(err)
 		}
 	case "go":
-		err := setup.SetupGolangProxy()
+		var mirrorName string = "taobao"
+		if m != nil {
+			mirrorName = *m
+		}
+		var mirror string
+		switch mirrorName {
+		case "goproxy.io":
+			mirror = "https://goproxy.io/zh/"
+		case "goproxy.cn":
+			mirror = "https://goproxy.cn"
+		case "aliyun":
+			mirror = "https://mirrors.aliyun.com/goproxy/"
+		default:
+			fmt.Println("unknown mirror")
+			return
+		}
+		err := setup.SetupGolangProxy(mirror)
 		if err != nil {
 			fmt.Println(err)
 		}

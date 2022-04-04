@@ -29,7 +29,4 @@ func SetupNpmProxy(mirror string) error {
 	default:
 		return errors.New("unsupported platform")
 	}
-	return nil
-	// pip3 config list
-
 }

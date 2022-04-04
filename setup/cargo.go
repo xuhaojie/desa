@@ -62,6 +62,4 @@ func SetupCargoProxy(mirror string) error {
 	default:
 		return errors.New("unsupported platform")
 	}
-	// pip3 config list
-
 }

@@ -94,6 +94,9 @@ func setupAptSourceLinux(mirror string) error {
 	}
 
 	exist, err := common.PathExists(targetPath)
+	if err != nil {
+		return err
+	}
 	if !exist {
 		return errors.New("config file does not exist")
 	}
@@ -114,7 +117,7 @@ func SetupAptSource(mirror string) error {
 	default:
 		return errors.New("unsupported platform")
 	}
-	return nil
+
 	// pip3 config list
 
 }
