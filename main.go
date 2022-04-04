@@ -14,6 +14,7 @@ func main() {
 	// var archs = [...]string{"x64", "universal", "arm64"}
 	// var formats = [...]string{"user", "archive", "deb", "rpm"}
 	//	uri := genVscodeUrl("insider", "linux", "x64", "rpm")
+
 	flag_download_vscode := true
 	flag_setup_pip := false
 	flag_setup_go := false
@@ -22,9 +23,9 @@ func main() {
 	if flag_download_vscode {
 		build := download.BUILD_STABLE
 
-		//os := common.GetOsType()
+		os := common.GetOsType()
 		//os := common.OS_WIN32
-		os := common.OS_LINUX
+		//os := common.OS_LINUX
 		//os := common.OS_DARWIN
 
 		arch := common.GetArchType()

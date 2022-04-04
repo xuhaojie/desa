@@ -3,6 +3,8 @@ package download
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path"
 	"strings"
 
 	"autopard.com/desa/common"
@@ -133,41 +135,16 @@ func replaceVscodeDownloadUrl(url string, build BuildType, newbase string) strin
 	}
 }
 
-func DownloadVscode(build BuildType, os common.OsType, arch common.ArchType, pkg PackageType) error {
-	// "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=win32"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=win32-arm64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=win32-arm64-user"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=win32-archive"
+func DownloadVscode(buildType BuildType, osType common.OsType, archType common.ArchType, pkgType PackageType) error {
 
-	// "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=linux-rpm-x64"
-
-	// "https://code.visualstudio.com/sha/download?build=stable&os=darwin"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal"
-
-	// "https://code.visualstudio.com/sha/download?build=stable&os=linux-rpm-x64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-	// "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-
-	url, err := genVscodeUrl(build, os, arch, pkg)
-
+	url, err := genVscodeUrl(buildType, osType, archType, pkgType)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
 
-	// uri := genVscodeUrl("stable", "win32", "x64", "archive")
-	// uri := genVscodeUrl("stable", "win32", "x64", "archive")
-	// uri := genVscodeUrl("stable", "win32", "x64", "archive")
-	// uri := genVscodeUrl("stable", "win32", "x64", "user")
-	// uri := genVscodeUrl("stable", "win32", "x64", "")
-	// uri := genVscodeUrl("stable", "win32", "", "")
 	fmt.Println(url)
-	//return nil
+
 	url, err = common.GetFinalUrl(url)
 
 	if err != nil {
@@ -175,13 +152,13 @@ func DownloadVscode(build BuildType, os common.OsType, arch common.ArchType, pkg
 		return err
 	}
 	fmt.Println(url)
-	return nil
 
-	replacedUrl := replaceVscodeDownloadUrl(url, build, "https://vscode.cdn.azure.cn")
+	replacedUrl := replaceVscodeDownloadUrl(url, buildType, "https://vscode.cdn.azure.cn")
 	fmt.Println(replacedUrl)
 	arr := strings.Split(replacedUrl, "/")
 	file := arr[len(arr)-1]
+	tmpDir := os.TempDir()
 
-	common.DownloadFile(replacedUrl, "/tmp/"+file)
+	common.DownloadFile(replacedUrl, path.Join(tmpDir, file))
 	return nil
 }
