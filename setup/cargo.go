@@ -1,17 +1,15 @@
 package setup
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
-	"runtime"
 
 	"autopard.com/desa/common"
 )
 
-func setupCargoProxyLinux(mirror string) error {
+func SetupCargoProxy(mirror string) error {
 	lines := []string{
 		"[source.crates-io]",
 		"registry = \"https://github.com/rust-lang/crates.io-index\"",
@@ -53,13 +51,4 @@ func setupCargoProxyLinux(mirror string) error {
 
 	err = ioutil.WriteFile(targetFile, []byte(cfg_data), os.FileMode(0644))
 	return err
-}
-
-func SetupCargoProxy(mirror string) error {
-	switch runtime.GOOS {
-	case "linux", "darwin":
-		return setupCargoProxyLinux(mirror)
-	default:
-		return errors.New("unsupported platform")
-	}
 }
