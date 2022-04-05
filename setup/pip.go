@@ -12,7 +12,7 @@ import (
 	"autopard.com/desa/common"
 )
 
-func setupPipProxyLinux(mirror string) error {
+func SetupPipProxy(mirror string) error {
 
 	lines := []string{
 		"[global]",
@@ -43,9 +43,21 @@ func setupPipProxyLinux(mirror string) error {
 	if err != nil {
 		return err
 	}
+	var cfgFoler string
+	var cfgFile string
 
-	targetPath := path.Join(userHomeDir, ".pip")
-	targetFile := path.Join(targetPath, "pip.conf")
+	switch runtime.GOOS {
+	case "linux", "darwin":
+		cfgFoler = ".pip"
+		cfgFile = "pip.conf"
+	case "windows":
+		cfgFoler = "pip"
+		cfgFile = "pip.ini"
+	default:
+		return errors.New("unsupported platform")
+	}
+	targetPath := path.Join(userHomeDir, cfgFoler)
+	targetFile := path.Join(targetPath, cfgFile)
 	exist, err := common.PathExists(targetPath)
 	if err != nil {
 		return err
@@ -59,13 +71,4 @@ func setupPipProxyLinux(mirror string) error {
 
 	err = ioutil.WriteFile(targetFile, []byte(cfg_data), os.FileMode(0644))
 	return err
-}
-
-func SetupPipProxy(mirror string) error {
-	switch runtime.GOOS {
-	case "linux", "darwin":
-		return setupPipProxyLinux(mirror)
-	default:
-		return errors.New("unsupported platform")
-	}
 }
