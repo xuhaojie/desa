@@ -1,13 +1,11 @@
 package setup
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"runtime"
 )
 
-func SetupNpmProxyLinux(mirror string) error {
+func SetupNpmProxy(mirror string) error {
 	cmds := []Cmd{
 		{cmd: "npm", params: []string{"config", "set", "registry", mirror}},
 	}
@@ -20,13 +18,4 @@ func SetupNpmProxyLinux(mirror string) error {
 	}
 
 	return nil
-}
-
-func SetupNpmProxy(mirror string) error {
-	switch runtime.GOOS {
-	case "linux", "darwin":
-		return SetupNpmProxyLinux(mirror)
-	default:
-		return errors.New("unsupported platform")
-	}
 }
