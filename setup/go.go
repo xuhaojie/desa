@@ -1,13 +1,11 @@
 package setup
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"runtime"
 )
 
-func setupGolangLinux(mirror string) error {
+func SetupGolangProxy(mirror string) error {
 	//$ go env -w GO111MODULE=on
 	//$ go env -w GOPROXY=https://goproxy.cn,direct
 	proxy := fmt.Sprintf("GOPROXY=%s,direct", mirror)
@@ -23,13 +21,4 @@ func setupGolangLinux(mirror string) error {
 	}
 
 	return nil
-}
-
-func SetupGolangProxy(mirror string) error {
-	switch runtime.GOOS {
-	case "linux", "darwin":
-		return setupGolangLinux(mirror)
-	default:
-		return errors.New("unsupported platform")
-	}
 }
