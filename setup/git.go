@@ -1,13 +1,11 @@
 package setup
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"runtime"
 )
 
-func setupGitLinux() error {
+func SetupGit() error {
 	cmds := []Cmd{
 		{cmd: "git", params: []string{"config", "--global", "user.name", "xuhaojie"}},
 		{cmd: "git", params: []string{"config", "--global", "user.email", "xuhaojie@hotmail.com"}},
@@ -21,13 +19,4 @@ func setupGitLinux() error {
 	}
 
 	return nil
-}
-
-func SetupGit() error {
-	switch runtime.GOOS {
-	case "linux", "darwin":
-		return setupGitLinux()
-	default:
-		return errors.New("unsupported platform")
-	}
 }
