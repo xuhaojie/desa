@@ -22,24 +22,24 @@ func downloadCmdHandler(args []string) {
 	downloadSet.Parse(args[1:])
 	target := args[0]
 	fmt.Println("download", target)
+	build := download.BUILD_STABLE
+
+	os := common.GetOsType()
+	//os := common.OS_WINDOWS
+	//os := common.OS_LINUX
+	//os := common.OS_DARWIN
+
+	arch := common.GetArchType()
+	//arch := common.ARCH_X86
+	//arch := common.ARCH_AMD64
+	//arch := common.ARCH_ARM
+	//arch := common.ARCH_ARM64
+	//arch := common.ARCH_UNIVERSAL
+
+	pkg := common.PACKAGE_UNKNOWN
+
 	switch target {
 	case "vscode":
-		build := download.BUILD_STABLE
-
-		os := common.GetOsType()
-		//os := common.OS_WIN32
-		//os := common.OS_LINUX
-		//os := common.OS_DARWIN
-
-		arch := common.GetArchType()
-		//arch := common.ARCH_X86
-		//arch := common.ARCH_AMD64
-		//arch := common.ARCH_ARM
-		//arch := common.ARCH_ARM64
-		//arch := common.ARCH_UNIVERSAL
-
-		pkg := common.PACKAGE_UNKNOWN
-
 		if os == common.OS_LINUX && pkg == common.PACKAGE_UNKNOWN {
 			osInfo := common.GetOsVersionInfo()
 			//fmt.Println(osInfo)
@@ -52,33 +52,11 @@ func downloadCmdHandler(args []string) {
 				pkg = common.PACKAGE_ARCHIVE
 			}
 		}
-
 		err := download.DownloadVscode(build, os, arch, pkg)
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "nomachine":
-		build := download.BUILD_STABLE
-
-		os := common.GetOsType()
-		//os := common.OS_WIN32
-		//os := common.OS_LINUX
-		//os := common.OS_DARWIN
-
-		arch := common.GetArchType()
-		//arch := common.ARCH_X86
-		//arch := common.ARCH_AMD64
-		//arch := common.ARCH_ARM
-		//arch := common.ARCH_ARM64
-		//arch := common.ARCH_UNIVERSAL
-
-		pkg := common.PACKAGE_UNKNOWN
-
-		// PACKAGE_EXE     PackageType = 1
-		// PACKAGE_MSI     PackageType = 2
-		// PACKAGE_DEB     PackageType = 3
-		// PACKAGE_RPM     PackageType = 4
-		// PACKAGE_ARCHIVE PackageType = 5
 		switch runtime.GOOS {
 		case "linux":
 			if pkg == common.PACKAGE_UNKNOWN {
@@ -99,6 +77,11 @@ func downloadCmdHandler(args []string) {
 			}
 		}
 		err := download.DownloadNomachine(build, os, arch, pkg)
+		if err != nil {
+			fmt.Println(err)
+		}
+	case "vmware":
+		err := download.DownloadVmware(build, os, arch, pkg)
 		if err != nil {
 			fmt.Println(err)
 		}

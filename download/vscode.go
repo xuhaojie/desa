@@ -23,7 +23,7 @@ func (p BuildType) String() string {
 	case BUILD_STABLE:
 		return "stable"
 	case BUILD_INSIDER:
-		return "linux"
+		return "insider"
 	default:
 		return "unknown"
 	}
@@ -33,7 +33,7 @@ func genVscodeUrl(build BuildType, os common.OsType, arch common.ArchType, pkg c
 	base := "https://code.visualstudio.com/sha/download"
 	var result string
 	switch os {
-	case common.OS_WIN32:
+	case common.OS_WINDOWS:
 		os_str := "win32"
 		var arch_str string
 		switch arch {

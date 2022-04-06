@@ -45,7 +45,7 @@ func DownloadNomachine(buildType BuildType, osType common.OsType, archType commo
 
 	case common.OS_DARWIN:
 		downLoadId = 7 //url = "https://www.nomachine.com/download/download&id=7" // https://download.nomachine.com/download/7.9/MacOSX/nomachine_7.9.2_1.dmg
-	case common.OS_WIN32:
+	case common.OS_WINDOWS:
 		downLoadId = 8 //url = "https://www.nomachine.com/download/download&id=8" // https://download.nomachine.com/download/7.9/Windows/nomachine_7.9.2_1.exe
 	default:
 		return errors.New("unsupported platform")
