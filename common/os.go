@@ -77,6 +77,7 @@ type OsInfo struct {
 func (i OsInfo) String() string {
 	return fmt.Sprintf("type: %s\nname: %s\nversion: %s\ncodename: %s\n", i.Type, i.Name, i.Version, i.CodeName)
 }
+
 func GetOsVersionInfo() OsInfo {
 	var osInfo OsInfo
 	switch runtime.GOOS {

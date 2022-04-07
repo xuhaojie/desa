@@ -9,7 +9,7 @@ func SetupGolangProxy(mirror string) error {
 	//$ go env -w GO111MODULE=on
 	//$ go env -w GOPROXY=https://goproxy.cn,direct
 	proxy := fmt.Sprintf("GOPROXY=%s,direct", mirror)
-	cmds := []Cmd{
+	cmds := []SysCmd{
 		{cmd: "go", params: []string{"env", "-w", "GO111MODULE=on"}},
 		{cmd: "go", params: []string{"env", "-w", proxy}},
 	}

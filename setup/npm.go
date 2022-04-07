@@ -6,7 +6,7 @@ import (
 )
 
 func SetupNpmProxy(mirror string) error {
-	cmds := []Cmd{
+	cmds := []SysCmd{
 		{cmd: "npm", params: []string{"config", "set", "registry", mirror}},
 	}
 

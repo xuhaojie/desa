@@ -5,12 +5,12 @@ import (
 	"os/exec"
 )
 
-type Cmd struct {
+type SysCmd struct {
 	cmd    string
 	params []string
 }
 
-func (cmd *Cmd) execute() ([]byte, error) {
+func (cmd *SysCmd) execute() ([]byte, error) {
 	command := exec.Command(cmd.cmd, cmd.params...)
 	out, err := command.CombinedOutput()
 	if err != nil {
@@ -21,7 +21,7 @@ func (cmd *Cmd) execute() ([]byte, error) {
 	return out, err
 }
 
-func executeCmds(cmds []Cmd) ([]byte, error) {
+func executeCmds(cmds []SysCmd) ([]byte, error) {
 	for _, cmd := range cmds {
 		_, err := cmd.execute()
 		if err != nil {

@@ -63,6 +63,9 @@ func DownloadNomachine(buildType BuildType, osType common.OsType, archType commo
 	//	req.Header.Set("Cookie", cookie)
 	client := &http.Client{}
 	rsp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
 	if rsp.StatusCode != http.StatusOK {
 		return errors.New(rsp.Status)
 	}

@@ -6,7 +6,7 @@ import (
 )
 
 func SetupGit() error {
-	cmds := []Cmd{
+	cmds := []SysCmd{
 		{cmd: "git", params: []string{"config", "--global", "user.name", "xuhaojie"}},
 		{cmd: "git", params: []string{"config", "--global", "user.email", "xuhaojie@hotmail.com"}},
 	}
