@@ -19,16 +19,17 @@ var Cmd = &base.Command{
 
 func Run(cmd *base.Command, args []string) {
 
-	downloadSet := flag.NewFlagSet("setup", flag.ContinueOnError)
+	cmdSet := flag.NewFlagSet("setup", flag.ContinueOnError)
 	//var g = setupSet.Bool("g", false, "generate sample config")
 	//var l = setupSet.Bool("l", false, "list targets")
 	//var m = setupSet.String("m", "", "mac address of target to wake")
 	//var n = setupSet.String("n", "", "name of target to wake")
 	//	setupSet.Parse(args)
 	if len(args) < 1 {
+		fmt.Printf("miss target")
 		return
 	}
-	downloadSet.Parse(args[1:])
+	cmdSet.Parse(args[1:])
 	target := args[0]
 	fmt.Println("download", target)
 	build := BUILD_STABLE

@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 
 	"autopard.com/desa/base"
+	"autopard.com/desa/clean"
 	"autopard.com/desa/download"
 	"autopard.com/desa/setup"
 )
@@ -16,6 +18,7 @@ var Cmd = &base.Command{
 	Commands: []*base.Command{
 		setup.Cmd,
 		download.Cmd,
+		clean.Cmd,
 	},
 }
 
@@ -50,7 +53,7 @@ func main() {
 			return
 		}
 	*/
-
+	var found bool = false
 	currentCmd := Cmd
 	for _, cmd := range currentCmd.Commands {
 		//fmt.Println(cmd.Name())
@@ -58,19 +61,26 @@ func main() {
 
 		if cmd.Name() != args[0] {
 			continue
-		}
-		if len(cmd.Commands) > 0 {
-			currentCmd = cmd
-			args = args[1:]
-			if len(args) == 0 {
+		} else {
+			found = true
+			if len(cmd.Commands) > 0 {
+				currentCmd = cmd
+				args = args[1:]
+				if len(args) == 0 {
 
+				}
+				if args[0] == "help" {
+					// Accept 'go mod help' and 'go mod help foo' for 'go help mod' and 'go help mod foo'.
+					return
+				}
 			}
-			if args[0] == "help" {
-				// Accept 'go mod help' and 'go mod help foo' for 'go help mod' and 'go help mod foo'.
-				return
-			}
+			cmd.Run(cmd, args[1:])
+			break
 		}
-		cmd.Run(cmd, args[1:])
-		return
+
 	}
+	if !found {
+		fmt.Println("unsurported command", args[0])
+	}
+
 }
