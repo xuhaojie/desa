@@ -3,15 +3,17 @@ package setup
 import (
 	"fmt"
 	"log"
+
+	"autopard.com/desa/common"
 )
 
 func SetupGit() error {
-	cmds := []SysCmd{
-		{cmd: "git", params: []string{"config", "--global", "user.name", "xuhaojie"}},
-		{cmd: "git", params: []string{"config", "--global", "user.email", "xuhaojie@hotmail.com"}},
+	cmds := []common.SysCmd{
+		{Cmd: "git", Params: []string{"config", "--global", "user.name", "xuhaojie"}},
+		{Cmd: "git", Params: []string{"config", "--global", "user.email", "xuhaojie@hotmail.com"}},
 	}
 
-	out, err := executeCmds(cmds)
+	out, err := common.ExecuteCmds(cmds)
 	fmt.Println(string(out))
 	if err != nil {
 		log.Fatalf("cmd.Run() failed with %s\n", err)

@@ -35,7 +35,6 @@ func main() {
 	if len(args) < 1 {
 		//base.Usage()
 		return
-
 	}
 
 	if args[0] == "get" || args[0] == "help" {
@@ -46,6 +45,7 @@ func main() {
 			}
 		*/
 	}
+
 	/*
 		cfg.CmdName = args[0] // for error messages
 		if args[0] == "help" {

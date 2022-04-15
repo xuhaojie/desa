@@ -10,7 +10,7 @@ import (
 	"autopard.com/desa/common"
 )
 
-func cleanRustProject(projectDir string) error {
+func cleanGoProject(projectDir string) error {
 	var targetDir = path.Join(projectDir, "target")
 	fmt.Println("clean", targetDir)
 	cleanWithCargo := true
@@ -30,7 +30,7 @@ func cleanRustProject(projectDir string) error {
 	}
 }
 
-func searchRustProjects(dir string) []string {
+func searchGoProjects(dir string) []string {
 	var projtects []string
 
 	err := filepath.Walk(dir, func(dir string, f os.FileInfo, err error) error {
@@ -40,7 +40,7 @@ func searchRustProjects(dir string) []string {
 		if f.IsDir() {
 			return nil
 		} else {
-			if f.Name() == "Cargo.toml" {
+			if f.Name() == "go.mod" {
 				projtects = append(projtects, filepath.Dir(dir))
 			}
 		}
@@ -54,14 +54,10 @@ func searchRustProjects(dir string) []string {
 	return projtects
 }
 
-func handleRustProjects(projtects []string) {
-
-}
-
-func CleanRustProjects(path string) error {
-	projects := searchRustProjects(path)
+func CleanGoProject(path string) error {
+	projects := searchGoProjects(path)
 	for _, p := range projects {
-		cleanRustProject(p)
+		cleanGoProject(p)
 	}
 	return nil
 }

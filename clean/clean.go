@@ -19,7 +19,7 @@ func Run(cmd *base.Command, args []string) {
 	cmdSet := flag.NewFlagSet("setup", flag.ContinueOnError)
 	//var g = setupSet.Bool("g", false, "generate sample config")
 	//var l = setupSet.Bool("l", false, "list targets")
-	//var m = setupSet.String("m", "", "mac address of target to wake")
+	var p = cmdSet.String("p", "", "project path to clean")
 	//var n = setupSet.String("n", "", "name of target to wake")
 	//	setupSet.Parse(args)
 	if len(args) < 1 {
@@ -32,7 +32,7 @@ func Run(cmd *base.Command, args []string) {
 	fmt.Println("clean", target)
 	switch target {
 	case "rust":
-		err := CleanRust("/Volumes/Data/Workspace/source/rust")
+		err := CleanRustProjects(*p)
 		if err != nil {
 			fmt.Println(err)
 		}
