@@ -4,30 +4,22 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 
 	"autopard.com/desa/common"
 )
 
 func cleanGppProject(projectDir string) error {
-	var targetDir = path.Join(projectDir, "target")
-	fmt.Println("clean", targetDir)
-	cleanWithGo := true
-	if cleanWithGo {
-		cmds := []common.SysCmd{
-			{Cmd: "go", Params: []string{"clean"}},
-		}
-		os.Chdir(projectDir)
-		out, err := common.ExecuteCmds(cmds)
-		fmt.Println(string(out))
-		if err != nil {
-			log.Fatalf("cmd.Run() failed with %s\n", err)
-		}
-		return err
-	} else {
-		return os.RemoveAll(targetDir)
+	cmds := []common.SysCmd{
+		{Cmd: "go", Params: []string{"clean"}},
 	}
+	os.Chdir(projectDir)
+	out, err := common.ExecuteCmds(cmds)
+	fmt.Println(string(out))
+	if err != nil {
+		log.Fatalf("cmd.Run() failed with %s\n", err)
+	}
+	return err
 }
 
 func searchGppProjects(dir string) []string {
