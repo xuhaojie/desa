@@ -36,12 +36,13 @@ func Run(cmd *base.Command, args []string) {
 		if err != nil {
 			fmt.Println(err)
 		}
+
+	case "go":
+		err := CleanGoProjects(*p)
+		if err != nil {
+			fmt.Println(err)
+		}
 		/*
-			case "go":
-				err := CleanGo("/tmp")
-				if err != nil {
-					fmt.Println(err)
-				}
 			case "cpp":
 				err := CleanCpp("/tmp")
 				if err != nil {

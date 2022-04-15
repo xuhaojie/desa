@@ -10,7 +10,7 @@
 			"request": "launch",
 			"mode": "debug",
 			"program": "${file}",
-			"args": ["download" , "vmware"]
+			"args": ["clean" , "go" , "-p", "/Volumes/Data/Workspace/source/go/gowaker"]
 		},
 		{
 			"name": "Launch Package",

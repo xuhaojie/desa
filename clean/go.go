@@ -13,10 +13,10 @@ import (
 func cleanGoProject(projectDir string) error {
 	var targetDir = path.Join(projectDir, "target")
 	fmt.Println("clean", targetDir)
-	cleanWithCargo := true
-	if cleanWithCargo {
+	cleanWithGo := true
+	if cleanWithGo {
 		cmds := []common.SysCmd{
-			{Cmd: "cargo", Params: []string{"clean"}},
+			{Cmd: "go", Params: []string{"clean"}},
 		}
 		os.Chdir(projectDir)
 		out, err := common.ExecuteCmds(cmds)
@@ -54,7 +54,7 @@ func searchGoProjects(dir string) []string {
 	return projtects
 }
 
-func CleanGoProject(path string) error {
+func CleanGoProjects(path string) error {
 	projects := searchGoProjects(path)
 	for _, p := range projects {
 		cleanGoProject(p)
