@@ -15,7 +15,6 @@ var Cmd = &base.Command{
 }
 
 func Run(cmd *base.Command, args []string) {
-
 	cmdSet := flag.NewFlagSet("setup", flag.ContinueOnError)
 	//var g = setupSet.Bool("g", false, "generate sample config")
 	//var l = setupSet.Bool("l", false, "list targets")
@@ -42,12 +41,11 @@ func Run(cmd *base.Command, args []string) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		/*
-			case "cpp":
-				err := CleanCpp("/tmp")
-				if err != nil {
-					fmt.Println(err)
-				}
-		*/
+
+	case "cpp":
+		err := CleanCppProjects(*p)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }

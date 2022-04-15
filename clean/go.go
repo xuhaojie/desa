@@ -4,30 +4,22 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 
 	"autopard.com/desa/common"
 )
 
 func cleanGoProject(projectDir string) error {
-	var targetDir = path.Join(projectDir, "target")
-	fmt.Println("clean", targetDir)
-	cleanWithGo := true
-	if cleanWithGo {
-		cmds := []common.SysCmd{
-			{Cmd: "go", Params: []string{"clean"}},
-		}
-		os.Chdir(projectDir)
-		out, err := common.ExecuteCmds(cmds)
-		fmt.Println(string(out))
-		if err != nil {
-			log.Fatalf("cmd.Run() failed with %s\n", err)
-		}
-		return err
-	} else {
-		return os.RemoveAll(targetDir)
+	cmds := []common.SysCmd{
+		{Cmd: "go", Params: []string{"clean"}},
 	}
+	os.Chdir(projectDir)
+	out, err := common.ExecuteCmds(cmds)
+	fmt.Println(string(out))
+	if err != nil {
+		log.Fatalf("cmd.Run() failed with %s\n", err)
+	}
+	return nil
 }
 
 func searchGoProjects(dir string) []string {
@@ -41,7 +33,9 @@ func searchGoProjects(dir string) []string {
 			return nil
 		} else {
 			if f.Name() == "go.mod" {
-				projtects = append(projtects, filepath.Dir(dir))
+				projectDir := filepath.Dir(dir)
+				projtects = append(projtects, projectDir)
+				fmt.Println("find project", projectDir)
 			}
 		}
 		//println(path)
@@ -57,6 +51,7 @@ func searchGoProjects(dir string) []string {
 func CleanGoProjects(path string) error {
 	projects := searchGoProjects(path)
 	for _, p := range projects {
+		fmt.Println("cleaning project", p, "...")
 		cleanGoProject(p)
 	}
 	return nil
